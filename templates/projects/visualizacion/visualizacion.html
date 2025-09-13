@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Visualizaciones Interactivas{% endblock %}
+{% block content %}
+  <h2>Visualización Interactiva con plotly</h2>
+  <p>Este gráfico muestra una dispersión de datos agrupados aleatoriamente.</p>
+  <div>
+    {{ graph_html | safe }}
+  </div>
+{% endblock %}
