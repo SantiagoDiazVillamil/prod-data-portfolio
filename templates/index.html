@@ -1,8 +1,75 @@
 {% extends "base.html" %}
 {% block title %}Inicio | Portfolio{% endblock %}
 {% block content %}
-  <div class="text-center">
-    <h1>Bienvenido a mi sitio profesional</h1>
-    <p>Explora mis proyectos en ciencia de datos e ingeniería de datos.</p>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SantiFlix – Ciencia de Datos con Estilo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+<!-- CV Image Banner Section -->
+<section class="cv-banner" style="background-color: white; padding: 40px 0; text-align: center;">
+  <a href="https://your-cv-link.com" target="_blank" style="display: inline-block; position: relative; max-width: 100%; width: 90%; margin: auto;">
+    <img src="{{ url_for('static', filename='images/banner.jpeg') }}" alt="Click to view CV" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2em; font-weight: bold; background-color: rgba(0, 0, 0, 0.4); padding: 20px 40px; border-radius: 8px;">
+      Click to view my CV
+    </div>
+  </a>
+</section>
+
+
+<h2 class="section-title" id="proyectos">Proyectos destacados</h2>
+<div class="carousel-container">
+  <button class="arrow left" onclick="moveCarousel(-1)">&#10094;</button>
+  <div class="carousel" id="carousel">
+    <!-- Repite esta tarjeta para cada proyecto -->
+    <div class="card"><img src="{{ url_for('static', filename='images/datasim.png') }}"><div class="card-content"><h3>Simulación de Datos</h3><p>Generación de datos sintéticos con modelos .pkl y streaming a BigQuery.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/dataimg1.jpeg') }}"><div class="card-content"><h3>Dashboard Interactivo</h3><p>Visualización con Plotly Dash para análisis de comportamiento de usuarios.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/arch.png') }}"><div class="card-content"><h3>Arquitectura en la Nube</h3><p>Pipeline automatizado con Cloud Run, Scheduler y Firestore.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/predan.png') }}"><div class="card-content"><h3>Analítica Predictiva</h3><p>Modelos de regresión y clasificación para pronóstico de ventas.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/dataimg1.jpeg') }}"><div class="card-content"><h3>Enriquecimiento con APIs</h3><p>Integración de datos externos como IP geolocation y redes sociales.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/dataimg1.jpeg') }}"><div class="card-content"><h3>Detección de Fraude</h3><p>Clustering y anomalías en transacciones financieras simuladas.</p></div></div>
   </div>
+  <button class="arrow right" onclick="moveCarousel(1)">&#10095;</button>
+</div>
+
+<script>
+  const carousel = document.getElementById('carousel');
+  const cards = document.querySelectorAll('.card');
+  let currentIndex = 0;
+  const visibleCards = 3;
+
+  function updateCarousel() {
+    const offset = currentIndex * (100 / visibleCards);
+    carousel.style.transform = `translateX(-${offset}%)`;
+
+    cards.forEach((card, index) => {
+      card.classList.remove('active');
+      if (index >= currentIndex && index < currentIndex + visibleCards) {
+        card.classList.add('active');
+      }
+    });
+  }
+
+  function moveCarousel(direction) {
+    const maxIndex = cards.length - visibleCards;
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = 0;
+    if (currentIndex > maxIndex) currentIndex = maxIndex;
+    updateCarousel();
+  }
+
+  updateCarousel();
+</script>
+
+</body>
+</html>
+
+
 {% endblock %}
