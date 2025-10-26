@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SantiFlix – Ciencia de Datos con Estilo</title>
+  <title>Professional Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -29,7 +29,7 @@
   <button class="arrow left" onclick="moveCarousel(-1)">&#10094;</button>
   <div class="carousel" id="carousel">
     <!-- Repite esta tarjeta para cada proyecto -->
-    <div class="card"><img src="{{ url_for('static', filename='images/RAG.png') }}"><div class="card-content"><h3>RAG - Asistente empresarial</h3><p>Chatbot que consolida mails, procesos y documentos de una empresa para que sus empleados puedan preguntarle sobre ellos.</p></div></div>
+    <div class="card"><a href="/projects/EnronAi" style="text-decoration: none; color: inherit;"><img src="{{ url_for('static', filename='images/RAG.png') }}"><div class="card-content"><h3>RAG - Asistente empresarial</h3><p>Chatbot que consolida mails, procesos y documentos de una empresa para que sus empleados puedan preguntarle sobre ellos.</p></div></a></div>
     <div class="card"><img src="{{ url_for('static', filename='images/FIN_ASSIST.png') }}"><div class="card-content"><h3>Agente de IA financiero</h3><p>Agente que ordena tu vida financiera. Guarda todos tus ingresos y gastos desde el chat y muestra avance, metas y gastos actuales.</p></div></div>
     <div class="card"><img src="{{ url_for('static', filename='images/arch.png') }}"><div class="card-content"><h3>Arquitectura en la Nube</h3><p>Pipeline automatizado con Cloud Run, Scheduler y Firestore.</p></div></div>
     <div class="card"><img src="{{ url_for('static', filename='images/predan.png') }}"><div class="card-content"><h3>Analítica Predictiva</h3><p>Modelos de regresión y clasificación para pronóstico de ventas.</p></div></div>

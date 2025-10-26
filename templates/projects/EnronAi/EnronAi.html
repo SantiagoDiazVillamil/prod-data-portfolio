@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}RAC Enron{% endblock %}
+
+{% block content %}
+  <h2>Asistente empresarial</h2>
+
+  <p><strong>¿Quién responde cuando nadie sabe?</strong>  
+  En muchas empresas, el conocimiento está disperso entre correos, documentos y personas que ya no están en la organización. ¿Y si cada correo, cada decisión, cada conversación pudiera convertirse en inteligencia empresarial?</p>
+
+  <p><em>RAC Enron</em> es un asistente inteligente que demuestra cómo la inteligencia artificial puede recuperar, comprender y sintetizar el conocimiento organizacional. A partir de más de <strong>600,000 correos reales</strong> del caso Enron, este sistema responde preguntas complejas, identifica responsables clave y reconstruye el contexto de decisiones empresariales con precisión.</p>
+
+  <p><strong>Esta arquitectura no depende del caso Enron</strong>. Puede adaptarse a cualquier empresa, permitiendo que el asistente aprenda de sus correos, documentos y procesos internos. Así, se convierte en una fuente confiable de conocimiento institucional, útil para <em>capacitación, toma de decisiones, auditoría y estandarización de procesos</em>.</p>
+
+  <p><strong>¿Cómo funciona?</strong>  
+  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
+
+  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+
+  <hr>
+
+  <div class="enronai-container">
+    <div class="enronai-form">
+      <!-- 🔧 MODIFICACIÓN 1: Se eliminó method="POST" y action="/enronai" para evitar que el formulario se envíe al servidor y recargue la página -->
+      <form id="enronai-form">
+        <label for="user-query"><strong>Interactúa con EnronAi:</strong></label><br>
+        <input type="text" id="user-query" name="user_query"
+               class="enronai-input"
+               placeholder="Ask EnronAi / Pregúntale a EnronAi"
+               onfocus="this.placeholder=''" onblur="this.placeholder='Ask EnronAi / Pregúntale a EnronAi'">
+        <!-- 🔧 MODIFICACIÓN 2: Se cambió type="submit" por type="button" para evitar el envío automático del formulario -->
+        <button type="button" id="enronai-button" class="enronai-button">Preguntar</button>
+      </form>
+    </div>
+
+    <div class="enronai-response">
+      <strong>Respuesta de EnronAi:</strong><br>
+      <!-- 🔧 MODIFICACIÓN 3: Se encapsuló la respuesta en un <p> con id="response-text" para que el script pueda actualizar el contenido dinámicamente -->
+      <p id="response-text">EnronAi will answer here / EnronAi responderá aquí</p>
+    </div>
+  </div>
+
+  <!-- 🔧 MODIFICACIÓN 4: Script incluido directamente en esta plantilla, dentro del bloque content, para mantener todo en EnronAi.html -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const button = document.getElementById('enronai-button');
+      const input = document.getElementById('user-query');
+      const output = document.getElementById('response-text');
+
+      if (button && input && output) {
+        button.addEventListener('click', async function (event) {
+          event.preventDefault(); // 🔧 MODIFICACIÓN 5: Previene el comportamiento por defecto del botón dentro del formulario
+
+          const query = input.value.trim();
+          if (!query) return;
+
+          const encodedQuery = encodeURIComponent(query);
+          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodedQuery}&k=5`;
+
+          try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            output.textContent = data.answer || 'No se recibió respuesta.';
+          } catch (error) {
+            output.textContent = 'Error al conectar con EnronAi.';
+            console.error('Error:', error);
+          }
+        });
+      }
+    });
+  </script>
+{% endblock %}

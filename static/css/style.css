@@ -128,3 +128,76 @@ footer {
     max-width: 100%;
   }
 }
+
+
+
+
+
+
+
+.enronai-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 3rem;
+  align-items: stretch; /* iguala altura */
+}
+
+.enronai-form,
+.enronai-response {
+  flex: 1; /* iguala ancho */
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-left: 4px solid #0a1f44;
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.enronai-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+  transition: border-color 0.3s;
+}
+
+.enronai-input:focus {
+  outline: none;
+  border-color: #0a1f44;
+  background-color: #ffffff;
+}
+
+.enronai-button {
+  margin-top: 1rem;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #0a1f44;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.enronai-button:hover {
+  background-color: #143d7a;
+}
