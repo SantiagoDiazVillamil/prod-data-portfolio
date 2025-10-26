@@ -54,7 +54,7 @@
           if (!query) return;
 
           const encodedQuery = encodeURIComponent(query);
-          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodedQuery}&k=5`;
+          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodedQuery}&k=30`;
 
           try {
             const response = await fetch(endpoint);
