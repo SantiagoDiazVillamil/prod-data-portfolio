@@ -59,7 +59,7 @@
           try {
             const response = await fetch(endpoint);
             const data = await response.json();
-            output.textContent = data.answer || 'No se recibió respuesta.';
+            output.textContent = data.gemini || 'No se recibió respuesta.';
           } catch (error) {
             output.textContent = 'Error al conectar con EnronAi.';
             console.error('Error:', error);
