@@ -162,13 +162,6 @@ footer {
 
 
 
-
-
-
-
-
-
-
 .enronai-input {
   width: 100%;
   padding: 14px 16px;
@@ -200,4 +193,21 @@ footer {
 
 .enronai-button:hover {
   background-color: #143d7a;
+}
+
+.enronai-summary {
+  font-size: 1.5em;       /* Simula un h2 */
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 0;
+}
+.enronai-details {
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  padding: 10px;
+}
+.enronai-container {
+  display: none; /* Oculto inicialmente */
 }

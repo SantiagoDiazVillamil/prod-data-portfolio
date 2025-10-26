@@ -2,70 +2,186 @@
 {% block title %}RAC Enron{% endblock %}
 
 {% block content %}
-  <h2>Asistente empresarial</h2>
+  
+<details open class="enronai-details">
+  <summary class="enronai-summary"><em>Asistente empresarial EnronAi</em></summary>
+  <p>
+<hr>
+  <details open><summary>Propósito y aplicación</summary>
+  <p><p><p><strong>¿Por qué las empresas ralentizan la toma de decisiones?</strong>  
+  En muchas empresas, el conocimiento está disperso entre correos, documentos y personas dentro y fuera de la organización.</p></p></p>
 
-  <p><strong>¿Quién responde cuando nadie sabe?</strong>  
-  En muchas empresas, el conocimiento está disperso entre correos, documentos y personas que ya no están en la organización. ¿Y si cada correo, cada decisión, cada conversación pudiera convertirse en inteligencia empresarial?</p>
+ <div class="enronai-image-container">
+    <img src="{{ url_for('static', filename='images/RAG.png') }}" alt="Arquitectura RAG" style="max-width:600px; width:100%; height:auto; display:block; margin:20px auto;">
+  </div>
+<br>
+  <p><em>EnronAi</em> es un asistente inteligente que demuestra que la documentación de procesos, correos y organigramas  de una empresa pueden ser insumo para que la inteligencia artificial pueda recuperar, comprender y sintetizar el conocimiento organizacional.
 
-  <p><em>RAC Enron</em> es un asistente inteligente que demuestra cómo la inteligencia artificial puede recuperar, comprender y sintetizar el conocimiento organizacional. A partir de más de <strong>600,000 correos reales</strong> del caso Enron, este sistema responde preguntas complejas, identifica responsables clave y reconstruye el contexto de decisiones empresariales con precisión.</p>
 
-  <p><strong>Esta arquitectura no depende del caso Enron</strong>. Puede adaptarse a cualquier empresa, permitiendo que el asistente aprenda de sus correos, documentos y procesos internos. Así, se convierte en una fuente confiable de conocimiento institucional, útil para <em>capacitación, toma de decisiones, auditoría y estandarización de procesos</em>.</p>
-
-  <p><strong>¿Cómo funciona?</strong>  
-  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
-
-  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+  <p><strong>Esta arquitectura no depende del caso Enron</strong>. Puede adaptarse a cualquier empresa, permitiendo que el asistente aprenda de sus correos, documentos y procesos internos. Así, se convierte en una fuente confiable de conocimiento institucional, útil para <em>gestión del conocimiento, toma de decisiones, estandarización de procesos y capacitación</em>.
+</details>
 
   <hr>
 
+  <details open><summary>Prueba la solución</summary>
+    <br>
+    Prueba con preguntas como:
+    <div>
+  <ul>
+    <li>¿Quién fue el CEO de Enron?</li>
+    <li>¿Cuáles eran los productos ofrecios por Enron?</li>
+    <li>¿En qué año se fundó la empresa?</li>
+  </ul>
+</div>
   <div class="enronai-container">
     <div class="enronai-form">
-      <!-- 🔧 MODIFICACIÓN 1: Se eliminó method="POST" y action="/enronai" para evitar que el formulario se envíe al servidor y recargue la página -->
       <form id="enronai-form">
         <label for="user-query"><strong>Interactúa con EnronAi:</strong></label><br>
         <input type="text" id="user-query" name="user_query"
                class="enronai-input"
-               placeholder="Ask EnronAi / Pregúntale a EnronAi"
+               placeholder="Ask EnronAi in any language/ Pregúntale a EnronAi en cualquier idioma"
                onfocus="this.placeholder=''" onblur="this.placeholder='Ask EnronAi / Pregúntale a EnronAi'">
-        <!-- 🔧 MODIFICACIÓN 2: Se cambió type="submit" por type="button" para evitar el envío automático del formulario -->
-        <button type="button" id="enronai-button" class="enronai-button">Preguntar</button>
+        <button type="submit" id="enronai-button" class="enronai-button">Preguntar</button>
       </form>
     </div>
 
     <div class="enronai-response">
       <strong>Respuesta de EnronAi:</strong><br>
-      <!-- 🔧 MODIFICACIÓN 3: Se encapsuló la respuesta en un <p> con id="response-text" para que el script pueda actualizar el contenido dinámicamente -->
       <p id="response-text">EnronAi will answer here / EnronAi responderá aquí</p>
     </div>
   </div>
+<script>
+  function markdownToHTML(text) {
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-  <!-- 🔧 MODIFICACIÓN 4: Script incluido directamente en esta plantilla, dentro del bloque content, para mantener todo en EnronAi.html -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const button = document.getElementById('enronai-button');
+    html = html.replace(/^\* /gm, '• ');
+
+    return html;
+}
+  document.addEventListener('DOMContentLoaded', function () {
+    // ✅ Creamos una función async para poder usar await
+    async function initializeEnronAi() {
+      const formContainer = document.querySelector('.enronai-container');
+      const loadingMessage = document.getElementById('loading-message');
+
+      try {
+        const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
+        if (response.ok && formContainer) {
+          formContainer.style.display = 'block';
+          if (loadingMessage) loadingMessage.style.display = 'none';
+        } else {
+          console.warn('Microservicio no respondió con 200');
+        }
+      } catch (error) {
+        console.error('Error al verificar el estado del microservicio:', error);
+      }
+
+      const form = document.getElementById('enronai-form');
       const input = document.getElementById('user-query');
       const output = document.getElementById('response-text');
+      const button = document.getElementById('enronai-button');
 
-      if (button && input && output) {
-        button.addEventListener('click', async function (event) {
-          event.preventDefault(); // 🔧 MODIFICACIÓN 5: Previene el comportamiento por defecto del botón dentro del formulario
+      if (form && input && output && button) {
+        form.addEventListener('submit', async function (event) {
+          event.preventDefault();
 
           const query = input.value.trim();
           if (!query) return;
 
-          const encodedQuery = encodeURIComponent(query);
-          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodedQuery}&k=30`;
+          button.disabled = true;
+          button.textContent = "Consultando…";
+
+          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodeURIComponent(query)}&k=30`;
 
           try {
             const response = await fetch(endpoint);
             const data = await response.json();
-            output.textContent = data.gemini || 'No se recibió respuesta.';
+            const html_response_gemini=markdownToHTML(data.gemini) || 'No se recibió respuesta.';
+            output.innerHTML  = html_response_gemini;
           } catch (error) {
             output.textContent = 'Error al conectar con EnronAi.';
             console.error('Error:', error);
+          } finally {
+            button.disabled = false;
+            button.textContent = "Preguntar";
           }
         });
       }
-    });
-  </script>
+    }
+
+    // ✅ Ejecutamos la función async
+    initializeEnronAi();
+  });
+</script>
+
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    const formContainer = document.querySelector('.enronai-container');
+
+    try {
+      const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
+      if (response.ok && formContainer) {
+        formContainer.style.display = 'block'; // ✅ Mostrar el formulario
+      } else {
+        console.warn('Microservicio no respondió con 200');
+      }
+    } catch (error) {
+      console.error('Error al verificar el estado del microservicio:', error);
+    }
+
+    // Aquí puedes mantener tu lógica de interacción con el formulario
+    const form = document.getElementById('enronai-form');
+    const input = document.getElementById('user-query');
+    const output = document.getElementById('response-text');
+    const button = document.getElementById('enronai-button');
+
+    if (form && input && output && button) {
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const query = input.value.trim();
+        if (!query) return;
+
+        button.disabled = true;
+        button.textContent = "Consultando…";
+
+        const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodeURIComponent(query)}&k=30`;
+
+        try {
+          const response = await fetch(endpoint);
+          const data = await response.json();
+          output.textContent = data.gemini || 'No se recibió respuesta.';
+        } catch (error) {
+          output.textContent = 'Error al conectar con EnronAi.';
+          console.error('Error:', error);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Preguntar";
+        }
+      });
+    }
+  });
+</script> -->
+
+
+  </details>
+
+<hr>
+
+<details><summary>Arquitectura y herramientas utilizadas</summary>
+  <p><strong>¿Cómo funciona?</strong>  
+  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
+
+  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+</details>
+<hr>
+<details><summary>Detalles, desde la idea hasta el despliegue</summary>
+  <p><strong>¿Cómo funciona?</strong>  
+  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
+
+  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+</details>
+
+
+</details>
 {% endblock %}
