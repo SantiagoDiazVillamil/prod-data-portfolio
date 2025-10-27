@@ -12,16 +12,75 @@
 </head>
 <body>
 
+<section class="intro-section">
+  <div class="intro-container">
+    <h1>Bienvenido a mi protafolio profesional</h1>
+    <p>
+      Este proyecto está en evolución constante. Aquí se desarrollan herramientas inteligentes para personas y empresas, <strong> maximizando la interacción del usuario final</strong> y transformando datos en decisiones útiles, accesibles y escalables.
+    </p>
+    <p>
+      Toda la infraestructura está desplegada sobre <strong>Google Cloud Platform</strong>, aprovechando la potencia de la nube para garantizar rendimiento, seguridad y escalabilidad desde el primer clic.
+    </p>
+  </div>
+</section>
+
 
 <!-- CV Image Banner Section -->
-<section class="cv-banner" style="background-color: white; padding: 40px 0; text-align: center;">
+<!-- <section class="cv-banner" style="background-color: white; padding: 40px 0; text-align: center;">
   <a href="https://your-cv-link.com" target="_blank" style="display: inline-block; position: relative; max-width: 100%; width: 90%; margin: auto;">
     <img src="{{ url_for('static', filename='images/banner.jpeg') }}" alt="Click to view CV" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2em; font-weight: bold; background-color: rgba(0, 0, 0, 0.4); padding: 20px 40px; border-radius: 8px;">
       Click to view my CV
     </div>
   </a>
+</section> -->
+
+<section class="profile-highlight">
+  <div class="profile-container">
+
+    <div class="profile-grid">
+      <div class="profile-card">
+
+            <h2>Perfil profesional</h2>
+    <p class="intro">
+      Ingeniero Industrial con énfasis en optimización, actualmente cursando una Maestría en Ciencia de Datos (finaliza diciembre 2025). Experiencia sólida en ciencia de datos, ingeniería de datos y automatización de procesos, con enfoque en soluciones escalables sobre Google Cloud Platform.
+    </p>
+
+
+        <h2>Educación</h2>
+        <ul>
+          <li><strong>Maestría en Ciencia de Datos</strong><br><span>Escuela Colombiana de Ingeniería Julio Garavito (2024 – Actualidad)</span></li>
+          <li><strong>Ingeniería Industrial</strong><br><span>Escuela Colombiana de Ingeniería Julio Garavito (2017 – 2023)</span></li>
+        </ul>
+      </div>
+
+      <div class="profile-card">
+        <h2>Experiencia profesional</h2>
+           <div class="experience-item">
+      <h3>Ingeniero de Datos <span>· Colfondos · Dic 2024 – Actualidad</span></h3>
+      <p>
+        Facilité el acceso a datos en toda la compañía mediante la migración y provisión de conjuntos de datos desde servidores locales hacia Google Cloud Platform. Reduje costos de transferencia en un 50% y construí un framework de ingesta automatizado con Cloud Run, Datafusion, BigQuery y Cloud Scheduler.
+      </p>
+    </div>
+
+    <div class="experience-item">
+      <h3>Especialista en Gestión y Control <span>· Colfondos · Feb 2024 – Dic 2024</span></h3>
+      <p>
+        Apoyé procesos operativos clave desarrollando soluciones eficientes y orientadas al usuario como tableros, bots RPA y pipelines ETL. Automatización de 1.200 horas-hombre/año mediante RPA en Python. Lideré como Product Owner un equipo Scrum multidisciplinario.
+      </p>
+    </div>
+
+    <div class="experience-item">
+      <h3>Científico de Datos en Pricing <span>· Dafiti · Nov 2022 – Feb 2024</span></h3>
+      <p>
+        Desarrollé y mantuve modelos, herramientas y consultas para optimizar el proceso de precios. Implementé un modelo de optimización por programación lineal para asignar márgenes óptimos entre categorías y marcas, contribuyendo directamente a la rentabilidad de la compañía.
+      </p>
+    </div>
+      </div>
+    </div>
+  </div>
 </section>
+
 
 
 <h2 class="section-title" id="proyectos">Proyectos destacados</h2>
@@ -29,12 +88,12 @@
   <button class="arrow left" onclick="moveCarousel(-1)">&#10094;</button>
   <div class="carousel" id="carousel">
     <!-- Repite esta tarjeta para cada proyecto -->
-    <div class="card"><a href="/projects/EnronAi" id='rac-button' style="text-decoration: none; color: inherit;"><img src="{{ url_for('static', filename='images/RAG.png') }}"><div class="card-content"><h3>RAG - Asistente empresarial</h3><p>Chatbot que consolida mails, procesos y documentos de una empresa para que sus empleados puedan preguntarle sobre ellos.</p></div></a></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/FIN_ASSIST.png') }}"><div class="card-content"><h3>Agente de IA financiero</h3><p>Agente que ordena tu vida financiera. Guarda todos tus ingresos y gastos desde el chat y muestra avance, metas y gastos actuales.</p></div></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/arch.png') }}"><div class="card-content"><h3>Arquitectura en la Nube</h3><p>Pipeline automatizado con Cloud Run, Scheduler y Firestore.</p></div></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/predan.png') }}"><div class="card-content"><h3>Analítica Predictiva</h3><p>Modelos de regresión y clasificación para pronóstico de ventas.</p></div></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/dataimg1.jpeg') }}"><div class="card-content"><h3>Enriquecimiento con APIs</h3><p>Integración de datos externos como IP geolocation y redes sociales.</p></div></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/dataimg1.jpeg') }}"><div class="card-content"><h3>Detección de Fraude</h3><p>Clustering y anomalías en transacciones financieras simuladas.</p></div></div>
+    <div class="card"><a href="/projects/EnronAi" id='rac-button' style="text-decoration: none; color: inherit;"><img src="{{ url_for('static', filename='images/RAG2.png') }}"><div class="card-content"><h3>RAG - Asistente empresarial</h3><p>Chatbot que consolida mails, procesos y documentos de una empresa para que sus empleados puedan preguntarle sobre ellos.</p></div></a></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de IA financiero.</h3><p>Agente que ordena tu vida financiera. Guarda todos tus ingresos y gastos desde el chat y muestra avance, metas y gastos actuales.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de llamadas automatizadas.</h3><p>Agente que genera llamadas a celular e interactua con el usuario para reservar una cita.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
   </div>
   <button class="arrow right" onclick="moveCarousel(1)">&#10095;</button>
 </div>

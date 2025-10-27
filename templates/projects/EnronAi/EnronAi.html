@@ -17,7 +17,6 @@
 <br>
   <p><em>EnronAi</em> es un asistente inteligente que demuestra que la documentación de procesos, correos y organigramas  de una empresa pueden ser insumo para que la inteligencia artificial pueda recuperar, comprender y sintetizar el conocimiento organizacional.
 
-
   <p><strong>Esta arquitectura no depende del caso Enron</strong>. Puede adaptarse a cualquier empresa, permitiendo que el asistente aprenda de sus correos, documentos y procesos internos. Así, se convierte en una fuente confiable de conocimiento institucional, útil para <em>gestión del conocimiento, toma de decisiones, estandarización de procesos y capacitación</em>.
 </details>
 
@@ -29,10 +28,14 @@
     <div>
   <ul>
     <li>¿Quién fue el CEO de Enron?</li>
-    <li>¿Cuáles eran los productos ofrecios por Enron?</li>
+    <li>¿Cuáles eran los productos o servicios ofrecidos por Enron?</li>
     <li>¿En qué año se fundó la empresa?</li>
   </ul>
 </div>
+
+<!-- <div id="loading-message" class="loading-message">🔄 Preparando EnronAi…</div> -->
+ <pre id="battery-loader" class="battery-loader"></pre>
+
   <div class="enronai-container">
     <div class="enronai-form">
       <form id="enronai-form">
@@ -50,87 +53,66 @@
       <p id="response-text">EnronAi will answer here / EnronAi responderá aquí</p>
     </div>
   </div>
-<script>
+
+
+<!-- <script>
   function markdownToHTML(text) {
     let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
     html = html.replace(/^\* /gm, '• ');
-
     return html;
-}
-  document.addEventListener('DOMContentLoaded', function () {
-    // ✅ Creamos una función async para poder usar await
-    async function initializeEnronAi() {
-      const formContainer = document.querySelector('.enronai-container');
-      const loadingMessage = document.getElementById('loading-message');
+  }
 
+  document.addEventListener('DOMContentLoaded', function () {
+    const battery = document.getElementById('battery-loader');
+    const formContainer = document.querySelector('.enronai-container');
+    const loadingMessage = document.getElementById('loading-message');
+
+    // 🔋 Animación de batería hasta 100%
+    const frames = [];
+    for (let i = 1; i <= 10; i++) {
+      const fill = '█'.repeat(i);
+      const empty = ' '.repeat(10 - i);
+      const percent = i * 10;
+  const frame = `
+╭───────────────╮
+│  [${fill}${empty}] │
+│      ${percent}%      │
+╰───────────────╯
+`;
+      frames.push(frame);
+    }
+
+    let index = 0;
+    const interval = setInterval(() => {
+      battery.textContent = frames[index];
+      index++;
+      if (index >= frames.length) {
+        clearInterval(interval);
+        battery.textContent = frames[frames.length - 1]; // Mantener en 100%
+        checkMicroserviceReady(); // ⏳ Esperar respuesta 200
+      }
+    }, 4500);
+
+    // ✅ Esperar respuesta 200 antes de mostrar la herramienta
+    async function checkMicroserviceReady() {
       try {
         const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
         if (response.ok && formContainer) {
           formContainer.style.display = 'block';
           if (loadingMessage) loadingMessage.style.display = 'none';
+          if (battery) battery.style.display = 'none';
         } else {
-          console.warn('Microservicio no respondió con 200');
+          battery.textContent = '⚠️ EnronAi no está disponible. Reintentando...';
+          setTimeout(checkMicroserviceReady, 2000); // 🔁 Reintenta cada 2 segundos
         }
       } catch (error) {
         console.error('Error al verificar el estado del microservicio:', error);
-      }
-
-      const form = document.getElementById('enronai-form');
-      const input = document.getElementById('user-query');
-      const output = document.getElementById('response-text');
-      const button = document.getElementById('enronai-button');
-
-      if (form && input && output && button) {
-        form.addEventListener('submit', async function (event) {
-          event.preventDefault();
-
-          const query = input.value.trim();
-          if (!query) return;
-
-          button.disabled = true;
-          button.textContent = "Consultando…";
-
-          const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodeURIComponent(query)}&k=30`;
-
-          try {
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            const html_response_gemini=markdownToHTML(data.gemini) || 'No se recibió respuesta.';
-            output.innerHTML  = html_response_gemini;
-          } catch (error) {
-            output.textContent = 'Error al conectar con EnronAi.';
-            console.error('Error:', error);
-          } finally {
-            button.disabled = false;
-            button.textContent = "Preguntar";
-          }
-        });
+        battery.textContent = '⚠️ Error de conexión. Reintentando...';
+        setTimeout(checkMicroserviceReady, 3000); // 🔁 Reintenta con espera
       }
     }
 
-    // ✅ Ejecutamos la función async
-    initializeEnronAi();
-  });
-</script>
-
-
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', async function () {
-    const formContainer = document.querySelector('.enronai-container');
-
-    try {
-      const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
-      if (response.ok && formContainer) {
-        formContainer.style.display = 'block'; // ✅ Mostrar el formulario
-      } else {
-        console.warn('Microservicio no respondió con 200');
-      }
-    } catch (error) {
-      console.error('Error al verificar el estado del microservicio:', error);
-    }
-
-    // Aquí puedes mantener tu lógica de interacción con el formulario
+    // ✅ Inicializar lógica del formulario
     const form = document.getElementById('enronai-form');
     const input = document.getElementById('user-query');
     const output = document.getElementById('response-text');
@@ -139,6 +121,7 @@
     if (form && input && output && button) {
       form.addEventListener('submit', async function (event) {
         event.preventDefault();
+
         const query = input.value.trim();
         if (!query) return;
 
@@ -150,7 +133,8 @@
         try {
           const response = await fetch(endpoint);
           const data = await response.json();
-          output.textContent = data.gemini || 'No se recibió respuesta.';
+          const html_response_gemini = markdownToHTML(data.gemini) || 'No se recibió respuesta.';
+          output.innerHTML = html_response_gemini;
         } catch (error) {
           output.textContent = 'Error al conectar con EnronAi.';
           console.error('Error:', error);
@@ -164,23 +148,226 @@
 </script> -->
 
 
+
+<script>
+  function markdownToHTML(text) {
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/^\* /gm, '• ');
+    return html;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const battery = document.getElementById('battery-loader');
+    const formContainer = document.querySelector('.enronai-container');
+    const loadingMessage = document.getElementById('loading-message');
+
+    const frames = [];
+    for (let i = 1; i <= 10; i++) {
+      const fill = '█'.repeat(i);
+      const empty = ' '.repeat(10 - i);
+      const percent = i * 10;
+      const frame = `
+╭───────────────╮
+│  [${fill}${empty}] │
+│      ${percent}%      │
+╰───────────────╯
+`;
+      frames.push(frame);
+    }
+
+    let index = 0;
+    let intervalSpeed = 4500; // velocidad normal
+    let interval;
+
+    let microserviceReady = false;
+
+    function startBatteryAnimation() {
+      interval = setInterval(() => {
+        battery.textContent = frames[index];
+        index++;
+
+        if (index >= frames.length) {
+          clearInterval(interval);
+          battery.textContent = frames[frames.length - 1];
+          if (microserviceReady) showInterface();
+        }
+      }, intervalSpeed);
+    }
+
+    async function checkMicroserviceReady() {
+      try {
+        const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
+        if (response.ok && formContainer) {
+          microserviceReady = true;
+
+          // ✅ OPCIÓN 1: completar la batería inmediatamente
+          if (index < frames.length) {
+            clearInterval(interval);
+            battery.textContent = frames[frames.length - 1];
+            showInterface();
+          }
+
+          // ✅ OPCIÓN 2: acelerar la animación si aún no terminó
+          // if (index < frames.length) {
+          //   clearInterval(interval);
+          //   intervalSpeed = 100; // velocidad rápida
+          //   startBatteryAnimation();
+          // } else {
+          //   showInterface();
+          // }
+        } else {
+          battery.textContent = '⚠️ EnronAi no está disponible. Reintentando...';
+          setTimeout(checkMicroserviceReady, 2000);
+        }
+      } catch (error) {
+        console.error('Error al verificar el estado del microservicio:', error);
+        battery.textContent = '⚠️ Error de conexión. Reintentando...';
+        setTimeout(checkMicroserviceReady, 3000);
+      }
+    }
+
+    function showInterface() {
+      formContainer.style.display = 'block';
+      if (loadingMessage) loadingMessage.style.display = 'none';
+      if (battery) battery.style.display = 'none';
+    }
+
+    startBatteryAnimation();
+    checkMicroserviceReady();
+
+    const form = document.getElementById('enronai-form');
+    const input = document.getElementById('user-query');
+    const output = document.getElementById('response-text');
+    const button = document.getElementById('enronai-button');
+
+    if (form && input && output && button) {
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const query = input.value.trim();
+        if (!query) return;
+
+        button.disabled = true;
+        button.textContent = "Consultando…";
+
+        const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodeURIComponent(query)}&k=30`;
+
+        try {
+          const response = await fetch(endpoint);
+          const data = await response.json();
+          const html_response_gemini = markdownToHTML(data.gemini) || 'No se recibió respuesta.';
+          output.innerHTML = html_response_gemini;
+        } catch (error) {
+          output.textContent = 'Error al conectar con EnronAi.';
+          console.error('Error:', error);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Preguntar";
+        }
+      });
+    }
+  });
+</script>
+
+
+
+
+
   </details>
 
 <hr>
 
-<details><summary>Arquitectura y herramientas utilizadas</summary>
-  <p><strong>¿Cómo funciona?</strong>  
-  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
+<details><summary>Orquestación y ecosistema de herramientas utilizadas</summary>
+  <p><strong>EnronAi: arquitectura modular para recuperación aumentada con IA</strong></p>
 
-  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+  <p>La arquitectura de EnronAi se basa en un pipeline robusto que combina procesamiento masivo, vectorización semántica y generación contextual. Estos son los componentes clave que intervienen en el proceso:</p>
+
+  <ul>
+    <li><strong>Preprocesamiento y vectorización</strong><br>
+      Máquina Virtual en Google Cloud: limpieza de datos con Pandas, eliminación de ruido y normalización textual.<br>
+      SentenceTransformer: convierte correos en vectores semánticos listos para búsqueda.
+    </li>
+    <br>
+    <li><strong>Indexación y almacenamiento</strong><br>
+      FAISS: genera índices vectoriales optimizados para búsquedas por distancia euclidiana.<br>
+      Cloud Storage: almacena embeddings, correos y modelos preentrenados.
+    </li>
+    <br>
+    <li><strong>Microservicio inteligente</strong><br>
+      Cloud Run: recibe la consulta, la vectoriza, busca los k correos más relevantes y los envía a Gemini.<br>
+      Gemini API: genera respuestas contextualizadas, traducidas y optimizadas para el idioma del usuario.
+    </li>
+    <br>
+    <li><strong>Despliegue y consumo</strong><br>
+      Interfaz web: HTML + JS para interacción directa.<br>
+      GitHub + Cloud Build: versionamiento y CI/CD.<br>
+      Artifact Registry: contenedor con dependencias, modelo y base vectorial.
+    </li>
+  </ul>
+
+
+  <p><strong>Ecosistema de herramientas utilizadas</strong></p>
+  <p>Estas aplicaciones fueron utilizadas durante eldesarrollo. Cada una cumple un rol clave para la generación inteligente de respuestas:</p>
+
+  <div class="tech-collage-container">
+    <img src="{{ url_for('static', filename='images/Enron_apps_python.png') }}" alt="Python" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_faiss.jpeg') }}" alt="FAISS" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_cloud_Storage.png') }}" alt="Cloud Storage" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_github.png') }}" alt="GitHub" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_cloud_build.png') }}" alt="Cloud Build" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_artifact_Registry.png') }}" alt="Artifact Registry" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_compute_engine.png') }}" alt="Compute Engine" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_gemini_api.png') }}" alt="Gemini" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_Sentence_Transformers.png') }}" alt="SBERT / HuggingFace" class="tech-logo">
+    <img src="{{ url_for('static', filename='images/Enron_apps_cloud_run_flask.png') }}" alt="Flask + Cloud Functions + Firestore" class="tech-logo">
+  </div>
+
+
 </details>
 <hr>
-<details><summary>Detalles, desde la idea hasta el despliegue</summary>
-  <p><strong>¿Cómo funciona?</strong>  
-  RAG combina técnicas de recuperación aumentada por contenido, modelos de Embedding (tokenización de palabras), búsqueda vectorial y generación de lenguaje natural. El usuario formula una pregunta, el sistema busca los correos más relevantes en la base de datos, y luego genera una respuesta contextualizada usando modelos de última generación.</p>
+<details open><summary>Detalles, desde la idea hasta el despliegue</summary>
+<br>
+  <p><strong>El recorrido técnico detrás de EnronAi</strong></p>
 
-  <p><em>Este asistente no solo responde preguntas. Aprende de la historia de la empresa para dar soporte y agilidad en los procesos.</em></p>
+  <p>EnronAi fue desarrollado en distintas etapas, integrando múltiples herramientas que aportaron valor en cada fase. A continuación, se detalla el proceso completo desde la concepción hasta el despliegue:</p>
+
+  <ul>
+    <li><strong>1. Selección del caso y definición del enfoque</strong><br>
+      La idea inicial era clara: construir un asistente inteligente potenciado por IA, orientado a apoyar procesos internos empresariales. Para ello, se requería una base de datos pública que reflejara decisiones, comunicaciones y dinámicas organizacionales. El dataset de Enron resultó ser el más adecuado, al contener miles de correos que, aunque no incluyen documentos formales ni organigramas, ofrecen una visión valiosa de las interacciones internas de la compañía.
+    </li>
+    <br>
+    <li><strong>2. Preprocesamiento de datos</strong><br>
+      En una máquina virtual de Google Cloud, se utilizó Python con las librerías Pandas y NumPy para limpiar el corpus: se eliminaron correos basura, símbolos irrelevantes, duplicados y mensajes generados por bots. Este paso fue esencial para garantizar coherencia semántica y relevancia contextual.
+    </li>
+    <br>
+    <li><strong>3. Vectorización semántica</strong><br>
+      Se aplicó SentenceTransformer (SBERT) para convertir cada correo en un vector de significado. Esto permitió realizar búsquedas contextuales basadas en similitud semántica, en lugar de coincidencias literales.
+    </li>
+    <br>
+    <li><strong>4. Indexación y almacenamiento</strong><br>
+      FAISS se utilizó para construir una base vectorial eficiente, optimizada para búsquedas por distancia euclidiana. Los vectores, correos y el modelo preentrenado se almacenaron en Google Cloud Storage, permitiendo acceso rápido y seguro desde otros servicios.
+    </li>
+    <br>
+    <li><strong>5. Construcción del microservicio</strong><br>
+      Se desarrolló un microservicio en Flask, desplegado en Cloud Run, que expone un endpoint HTTP optimizado para consultas GET. Este endpoint recibe dos parámetros: la pregunta del usuario (query) y el número de resultados deseados (k). Internamente, la consulta se traduce al inglés si es necesario, se vectoriza, y se ejecuta una búsqueda en la base FAISS. Los vectores más relevantes se envían a Gemini mediante su API, y la respuesta generada se traduce nuevamente al idioma original antes de ser entregada al usuario.
+    </li>
+    <br>
+    <li><strong>6. Exposición como servicio</strong><br>
+      El microservicio fue desplegado en Cloud Run, lo que permitió escalar la solución y consumirla desde una interfaz web. Se garantizó disponibilidad, eficiencia y bajo tiempo de respuesta.
+    </li>
+    <br>
+    <li><strong>7. Automatización y despliegue continuo</strong><br>
+      Se integró GitHub para el versionamiento del código, Cloud Build para la automatización del despliegue, y Artifact Registry como repositorio central de contenedores.
+    </li>
+    <br>
+    <li><strong>8. Interfaz de usuario</strong><br>
+      Se diseñó una página web responsiva que permite interactuar con EnronAi en cualquier idioma. La interfaz es intuitiva, clara y refleja el propósito del asistente: recuperar, comprender y sintetizar conocimiento empresarial de forma accesible.
+    </li>
+  </ul>
+
+  <p><em>Este recorrido técnico, junto con las capacidades elásticas de Google Cloud, permitieron orquestar de manera eficiente las múltiples tecnologías involucradas para concluir con éxito este proyecto.</em></p>
 </details>
+
 
 
 </details>

@@ -211,3 +211,95 @@ footer {
 .enronai-container {
   display: none; /* Oculto inicialmente */
 }
+
+.battery-loader {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  white-space: pre;
+  margin-top: 2rem;
+}
+
+
+.loading-message {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2.2rem;
+}
+
+
+.intro-section {
+  background: linear-gradient(to bottom right, #143d7a, #1f2e45);
+  color: #f0f0f0;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.intro-container h1 {
+  font-size: 2.2rem;
+  color: rgb(170, 180, 198); /* naranja cálido */
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.intro-container p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #d0d0d0;
+}
+
+.intro-container strong {
+  color: #ffffff;
+}
+
+
+
+
+
+
+.profile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.profile-card {
+  flex: 1 1 45%;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.profile-card h3 {
+  font-size: 1.4rem;
+  color: #143d7a;
+  margin-bottom: 1rem;
+}
+
+.profile-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-card li {
+  margin-bottom: 1.2rem;
+}
+
+.profile-card strong {
+  color: #143d7a;
+  font-weight: 600;
+}
+
+.profile-card span {
+  display: block;
+  color: #143d7a;
+  font-size: 0.95rem;
+  margin-top: 0.3rem;
+}
