@@ -54,6 +54,101 @@
     </div>
   </div>
 
+
+<!-- <script>
+  function markdownToHTML(text) {
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/^\* /gm, '• ');
+    return html;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const battery = document.getElementById('battery-loader');
+    const formContainer = document.querySelector('.enronai-container');
+    const loadingMessage = document.getElementById('loading-message');
+
+    // 🔋 Animación de batería hasta 100%
+    const frames = [];
+    for (let i = 1; i <= 10; i++) {
+      const fill = '█'.repeat(i);
+      const empty = ' '.repeat(10 - i);
+      const percent = i * 10;
+  const frame = `
+╭───────────────╮
+│  [${fill}${empty}] │
+│      ${percent}%      │
+╰───────────────╯
+`;
+      frames.push(frame);
+    }
+
+    let index = 0;
+    const interval = setInterval(() => {
+      battery.textContent = frames[index];
+      index++;
+      if (index >= frames.length) {
+        clearInterval(interval);
+        battery.textContent = frames[frames.length - 1]; // Mantener en 100%
+        checkMicroserviceReady(); // ⏳ Esperar respuesta 200
+      }
+    }, 4500);
+
+    // ✅ Esperar respuesta 200 antes de mostrar la herramienta
+    async function checkMicroserviceReady() {
+      try {
+        const response = await fetch('https://enron-microservice-934190760998.us-east1.run.app/start');
+        if (response.ok && formContainer) {
+          formContainer.style.display = 'block';
+          if (loadingMessage) loadingMessage.style.display = 'none';
+          if (battery) battery.style.display = 'none';
+        } else {
+          battery.textContent = '⚠️ EnronAi no está disponible. Reintentando...';
+          setTimeout(checkMicroserviceReady, 2000); // 🔁 Reintenta cada 2 segundos
+        }
+      } catch (error) {
+        console.error('Error al verificar el estado del microservicio:', error);
+        battery.textContent = '⚠️ Error de conexión. Reintentando...';
+        setTimeout(checkMicroserviceReady, 3000); // 🔁 Reintenta con espera
+      }
+    }
+
+    // ✅ Inicializar lógica del formulario
+    const form = document.getElementById('enronai-form');
+    const input = document.getElementById('user-query');
+    const output = document.getElementById('response-text');
+    const button = document.getElementById('enronai-button');
+
+    if (form && input && output && button) {
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const query = input.value.trim();
+        if (!query) return;
+
+        button.disabled = true;
+        button.textContent = "Consultando…";
+
+        const endpoint = `https://enron-microservice-934190760998.us-east1.run.app/search?query=${encodeURIComponent(query)}&k=30`;
+
+        try {
+          const response = await fetch(endpoint);
+          const data = await response.json();
+          const html_response_gemini = markdownToHTML(data.gemini) || 'No se recibió respuesta.';
+          output.innerHTML = html_response_gemini;
+        } catch (error) {
+          output.textContent = 'Error al conectar con EnronAi.';
+          console.error('Error:', error);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Preguntar";
+        }
+      });
+    }
+  });
+</script> -->
+
+
+
 <script>
   function markdownToHTML(text) {
     let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -132,7 +227,6 @@
 
     startBatteryAnimation();
     checkMicroserviceReady();
-    showInterface();
 
     const form = document.getElementById('enronai-form');
     const input = document.getElementById('user-query');
