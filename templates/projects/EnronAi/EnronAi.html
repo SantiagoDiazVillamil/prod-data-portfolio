@@ -201,21 +201,14 @@
           microserviceReady = true;
 
           // ✅ OPCIÓN 1: completar la batería inmediatamente
-          if (index < frames.length) {
-            clearInterval(interval);
-            battery.textContent = frames[frames.length - 1];
-            showInterface();
-          }
-
-          // ✅ OPCIÓN 2: acelerar la animación si aún no terminó
-          // if (index < frames.length) {
-          //   clearInterval(interval);
-          //   intervalSpeed = 100; // velocidad rápida
-          //   startBatteryAnimation();
-          // } else {
-          //   showInterface();
-          // }
-        } else {
+      if (index < frames.length) {
+        clearInterval(interval);
+        battery.textContent = frames[frames.length - 1];
+        showInterface();
+      } else {
+        showInterface(); // ✅ aquí se corrige el bug
+      }
+    } else {
           battery.textContent = '⚠️ EnronAi no está disponible. Reintentando...';
           setTimeout(checkMicroserviceReady, 2000);
         }
