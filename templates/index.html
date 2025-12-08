@@ -39,7 +39,7 @@
   <div class="profile-container">
 
     <!-- <div class="profile-grid"> -->
-      <div class="profile-card">
+      <div class="profile-card" id="cv">
 
             <h2>Perfil profesional</h2>
     <p class="intro">
@@ -89,20 +89,64 @@
 
 
 
-<h2 class="section-title" id="proyectos">Proyectos destacados</h2>
+<h2 class="section-title" id="proyectos">Proyectos</h2>
 <div class="carousel-container">
   <button class="arrow left" onclick="moveCarousel(-1)">&#10094;</button>
   <div class="carousel" id="carousel">
     <!-- Repite esta tarjeta para cada proyecto -->
     <div class="card"><a href="/projects/EnronAi" id='rac-button' style="text-decoration: none; color: inherit;"><img src="{{ url_for('static', filename='images/RAG2.png') }}"><div class="card-content"><h3>RAG - Asistente empresarial</h3><p>Chatbot que consolida mails, procesos y documentos de una empresa para que sus empleados puedan preguntarle sobre ellos.</p></div></a></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de IA financiero.</h3><p>Agente que ordena tu vida financiera. Guarda todos tus ingresos y gastos desde el chat y muestra avance, metas y gastos actuales.</p></div></div>
-    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de llamadas automatizadas.</h3><p>Agente que genera llamadas a celular e interactua con el usuario para reservar una cita.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de IA financiero [En desarrollo].</h3><p>Agente que ordena tu vida financiera. Guarda todos tus ingresos y gastos desde el chat y muestra avance, metas y gastos actuales.</p></div></div>
+    <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Agente de llamadas automatizadas [En desarrollo].</h3><p>Agente que genera llamadas a celular e interactua con el usuario para reservar una cita.</p></div></div>
     <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
     <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
     <div class="card"><img src="{{ url_for('static', filename='images/proyecto_en_desarrollo2.png') }}"><div class="card-content"><h3>Proyecto pendiente por definición</h3><p>Proyecto pendiente por definición.</p></div></div>
   </div>
   <button class="arrow right" onclick="moveCarousel(1)">&#10095;</button>
 </div>
+
+<h2 class="section-title" id="contacto">Contacto</h2>
+
+<section class="profile-highlight">
+  <div class="profile-container">
+
+    <div class="profile-card" id="contact-card">
+
+      <h2>Información de contacto</h2>
+
+      <p class="intro">
+        Si deseas ponerte en contacto conmigo para oportunidades profesionales, proyectos de ciencia de datos, consultoría o colaboración en soluciones basadas en IA y Google Cloud, aquí tienes mis canales directos:
+      </p>
+
+      <ul class="contact-list">
+        <li>
+          <strong>Celular:</strong>
+          <span>+57 314 725 7733</span>
+        </li>
+
+        <li>
+          <strong>Correo principal:</strong>
+          <span>diazvillamilsantiago@gmail.com</span>
+        </li>
+
+        <li>
+          <strong>Correo alterno:</strong>
+          <span>santiagodiazvillamil@hotmail.com</span>
+        </li>
+
+        <li>
+          <strong>LinkedIn:</strong>
+          <a href="https://www.linkedin.com/in/santiagoandrésdíazvillamil" target="_blank">
+            www.linkedin.com/in/santiagoandrésdíazvillamil
+          </a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+</section>
+
+
 
 <script>
   const carousel = document.getElementById('carousel');
